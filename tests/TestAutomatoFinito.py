@@ -75,3 +75,9 @@ class TestAutomatoFinito(unittest.TestCase):
         self.automato_finito.define_alfabeto(('a'))
         self.automato_finito.define_estados('R')
         self.assertFalse(self.automato_finito.adiciona_transicao('R','a','S'))
+
+    def test_nao_adiciona_transicao_nao_deterministica(self):
+        self.automato_finito.define_alfabeto(('a'))
+        self.automato_finito.define_estados(('R','S','T'))
+        self.automato_finito.adiciona_transicao('R','a','S')
+        self.assertFalse(self.automato_finito.adiciona_transicao('R','a','T'))

@@ -27,6 +27,8 @@ class AutomatoFinito:
 
         if estadoA not in self.transicoes:
             self.transicoes[estadoA] = {}
+        if terminal in self.transicoes[estadoA]:
+            return False
         self.transicoes[estadoA][terminal] = estadoB
         return True
 
