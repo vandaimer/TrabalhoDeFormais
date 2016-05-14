@@ -1,4 +1,3 @@
-from collections import OrderedDict
 
 
 class AutomatoFinito:
@@ -27,9 +26,8 @@ class AutomatoFinito:
         if estadoB not in self.estados: return False
 
         if estadoA not in self.transicoes:
-            self.transicoes[estadoA] = [OrderedDict({terminal:estadoB})]
-        else:
-            self.transicoes[estadoA].append(OrderedDict({terminal:estadoB}))
+            self.transicoes[estadoA] = {}
+        self.transicoes[estadoA][terminal] = estadoB
         return True
 
     def obtem_transicoes(self):

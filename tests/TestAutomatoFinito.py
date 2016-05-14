@@ -1,5 +1,4 @@
 import unittest
-from collections import OrderedDict
 from AutomatoFinito import AutomatoFinito
 
 
@@ -43,14 +42,14 @@ class TestAutomatoFinito(unittest.TestCase):
         self.assertTrue(self.automato_finito.adiciona_transicao('R', 'a', 'S'))
 
     def test_obtem_transicoes(self):
-        transicao = {'R':[OrderedDict({'a':'S'})]}
+        transicao = {'R':{'a':'S'}}
         self.automato_finito.define_alfabeto(('a'))
         self.automato_finito.define_estados(('R', 'S'))
         self.automato_finito.adiciona_transicao('R', 'a', 'S')
         self.assertEqual(self.automato_finito.obtem_transicoes(), transicao)
 
     def test_adiciona_duas_transicoes(self):
-        transicoes = {'R':[{'a':'S'}], 'S':[{'b':'T'}]}
+        transicoes = {'R':{'a':'S'}, 'S':{'b':'T'}}
         self.automato_finito.define_alfabeto(('a','b'))
         self.automato_finito.define_estados(('R', 'S', 'T'))
         self.automato_finito.adiciona_transicao('R', 'a', 'S')
@@ -58,7 +57,7 @@ class TestAutomatoFinito(unittest.TestCase):
         self.assertEqual(self.automato_finito.obtem_transicoes(), transicoes)
 
     def test_adiciona_duas_transicoes_que_tem_origem_no_mesmo_estado(self):
-        transicoes = {'S':[OrderedDict({'b':'T'}),OrderedDict({'c':'Y'})]}
+        transicoes = {'S':{'b':'T','c':'Y'}}
         self.automato_finito.define_alfabeto(('c','b'))
         self.automato_finito.define_estados(('S', 'Y', 'T'))
         self.automato_finito.adiciona_transicao('S', 'b', 'T')
