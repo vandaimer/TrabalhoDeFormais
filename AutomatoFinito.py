@@ -1,36 +1,36 @@
 
 
-class AutomatoFinito:
+class Automaton:
     def __init__(self):
-        self.estados = ()
-        self.alfabeto = ()
-        self.transicoes = {}
+        self.states = ()
+        self.alphabet = ()
+        self.transitions = {}
 
-    def define_alfabeto(self, alfabeto):
-        if len(self.estados) > 0: return False;
-        if len(alfabeto) == 0: return False
+    def set_alphabet(self, alphabet):
+        if len(self.states) > 0: return False;
+        if len(alphabet) == 0: return False
 
-        self.alfabeto = alfabeto
+        self.alphabet = alphabet
         return True
 
-    def obtem_alfabeto(self):
-        return self.alfabeto
+    def get_alphabet(self):
+        return self.alphabet
 
-    def define_estados(self, estados):
-        self.estados = tuple(estados)
+    def set_states(self, states):
+        self.states = tuple(states)
         return True
 
-    def adiciona_transicao(self, estadoA, terminal, estadoB ):
-        if estadoA not in self.estados: return False
-        if terminal not in self.alfabeto: return False
-        if estadoB not in self.estados: return False
+    def add_transition(self, stateA, terminal, stateB ):
+        if stateA not in self.states: return False
+        if terminal not in self.alphabet: return False
+        if stateB not in self.states: return False
 
-        if estadoA not in self.transicoes:
-            self.transicoes[estadoA] = {}
-        if terminal in self.transicoes[estadoA]:
+        if stateA not in self.transitions:
+            self.transitions[stateA] = {}
+        if terminal in self.transitions[stateA]:
             return False
-        self.transicoes[estadoA][terminal] = estadoB
+        self.transitions[stateA][terminal] = stateB
         return True
 
-    def obtem_transicoes(self):
-        return self.transicoes
+    def get_transitions(self):
+        return self.transitions
