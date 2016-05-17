@@ -13,7 +13,7 @@ class TestAutomatoFinito(unittest.TestCase):
         self.finite_automaton.set_states(['S','T'])
         self.assertIsInstance(self.finite_automaton.states, tuple)
 
-    def test_tipo_estrutura_da_estrutura_estados_eh_tupla_se_passar_dict(self):
+    def test_tipo_estrutura_da_estrutura_estados_eh_tuple_se_passar_dict(self):
         self.finite_automaton.set_states({'S','T'})
         self.assertIsInstance(self.finite_automaton.states, tuple)
 
@@ -81,3 +81,22 @@ class TestAutomatoFinito(unittest.TestCase):
         self.finite_automaton.set_states(('R','S','T'))
         self.finite_automaton.add_transition('R','a','S')
         self.assertFalse(self.finite_automaton.add_transition('R','a','T'))
+
+    def test_define_estado_inicial(self):
+        self.finite_automaton.set_states(('S'))
+        self.assertTrue(self.finite_automaton.set_initial_state('S'))
+
+    def test_define_estado_inicial_se_o_estad_jah_foi_definido(self):
+        self.finite_automaton.set_states(('R','S','T'))
+        self.assertFalse(self.finite_automaton.set_initial_state('H'))
+
+    def test_verifica_se_estado_inicial_foi_definido(self):
+        self.finite_automaton.set_states(('Q0'))
+        self.finite_automaton.set_initial_state('Q0')
+        self.assertTrue(self.finite_automaton.has_defined())
+
+    def test_verifica_c_estado_inicial_foi_definido(self):
+        self.assertFalse(self.finite_automaton.has_defined())
+
+    def test_nao_define_estado_inicial_se_o_estado_nao_foi_definido(self):
+        self.assertFalse(self.finite_automaton.set_initial_state('J'))

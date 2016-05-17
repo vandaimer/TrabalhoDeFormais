@@ -5,6 +5,7 @@ class Automaton:
         self.states = ()
         self.alphabet = ()
         self.transitions = {}
+        self.initial_state = None
 
     def set_alphabet(self, alphabet):
         if len(self.states) > 0: return False;
@@ -17,7 +18,10 @@ class Automaton:
         return self.alphabet
 
     def set_states(self, states):
-        self.states = tuple(states)
+        if not isinstance(states, tuple):
+            self.states = (states,)
+        else:
+            self.states = (states)
         return True
 
     def add_transition(self, stateA, terminal, stateB ):
@@ -34,3 +38,12 @@ class Automaton:
 
     def get_transitions(self):
         return self.transitions
+
+    def set_initial_state(self, state):
+        if state not in self.states: return False
+        self.initial_state = state
+        return True
+
+    def has_defined(self):
+        if self.initial_state == None: return False
+        return True
