@@ -92,11 +92,10 @@ class TestAutomatoFinito(unittest.TestCase):
 
     def test_verifica_se_estado_inicial_foi_definido(self):
         self.finite_automaton.set_states(('Q0'))
-        self.finite_automaton.set_initial_state('Q0')
-        self.assertTrue(self.finite_automaton.initial_state_has_defined())
+        self.assertTrue(self.finite_automaton.set_initial_state('Q0'))
 
-    def test_verifica_c_estado_inicial_foi_definido(self):
-        self.assertFalse(self.finite_automaton.initial_state_has_defined())
+    def test_nao_define_estado_inicial_foi_definido(self):
+        self.assertFalse(self.finite_automaton.set_initial_state('q0'))
 
     def test_nao_define_estado_inicial_se_o_estado_nao_foi_definido(self):
         self.assertFalse(self.finite_automaton.set_initial_state('J'))
