@@ -100,3 +100,10 @@ class TestAutomatoFinito(unittest.TestCase):
 
     def test_nao_define_estado_inicial_se_o_estado_nao_foi_definido(self):
         self.assertFalse(self.finite_automaton.set_initial_state('J'))
+
+    def test_define_estados_finais(self):
+        self.finite_automaton.set_states(('S', 'T'))
+        self.assertTrue(self.finite_automaton.define_final_states(('S','T')))
+
+    def test_nao_define_estado_final_se_ele_nao_foi_definido_antes(self):
+        self.assertFalse(self.finite_automaton.define_final_states(('S','B')))

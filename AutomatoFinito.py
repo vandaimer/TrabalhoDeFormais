@@ -47,3 +47,9 @@ class Automaton:
     def has_defined(self):
         if self.initial_state == None: return False
         return True
+
+    def define_final_states(self, states):
+        for state in states:
+            if state not in self.states:
+                return False
+        return True
