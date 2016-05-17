@@ -54,3 +54,6 @@ class Automaton:
 
     def get_final_states(self):
         return self.final_states
+
+    def get_initial_state(self):
+        return self.initial_state
