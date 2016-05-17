@@ -5,6 +5,7 @@ class Automaton:
         self.states = ()
         self.alphabet = ()
         self.transitions = {}
+        self.final_states = ()
         self.initial_state = None
 
     def set_alphabet(self, alphabet):
@@ -44,8 +45,12 @@ class Automaton:
         self.initial_state = state
         return True
 
-    def define_final_states(self, states):
+    def set_final_states(self, states):
         for state in states:
             if state not in self.states:
                 return False
+        self.final_states = states
         return True
+
+    def get_final_states(self):
+        return self.final_states

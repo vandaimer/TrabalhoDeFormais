@@ -102,7 +102,19 @@ class TestAutomatoFinito(unittest.TestCase):
 
     def test_define_estados_finais(self):
         self.finite_automaton.set_states(('S', 'T'))
-        self.assertTrue(self.finite_automaton.define_final_states(('S','T')))
+        self.assertTrue(self.finite_automaton.set_final_states(('S','T')))
 
     def test_nao_define_estado_final_se_ele_nao_foi_definido_antes(self):
-        self.assertFalse(self.finite_automaton.define_final_states(('S','B')))
+        self.assertFalse(self.finite_automaton.set_final_states(('S','B')))
+
+    def test_verifica_se_foi_adicionado_os_estados_finais(self):
+        self.finite_automaton.set_states(('S','H'))
+        self.finite_automaton.set_final_states(('S','H'))
+        self.assertEqual(self.finite_automaton.get_final_states(), ('S','H'))
+
+    def test_verifica_se_foi_sobreescrito_os_estados_finais(self):
+        self.finite_automaton.set_states(('X','T'))
+        self.finite_automaton.set_states(('XX','TT'))
+        self.finite_automaton.set_final_states(('X','T'))
+        self.finite_automaton.set_final_states(('XX','TT'))
+        self.assertEqual(self.finite_automaton.get_final_states(), ('XX','TT'))
