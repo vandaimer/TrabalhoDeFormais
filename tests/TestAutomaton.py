@@ -1,8 +1,8 @@
 import unittest
-from AutomatoFinito import Automaton
+from Automaton import Automaton
 
 
-class TestAutomatoFinito(unittest.TestCase):
+class TestAutomaton(unittest.TestCase):
     def setUp(self):
         self.finite_automaton =  Automaton()
 
