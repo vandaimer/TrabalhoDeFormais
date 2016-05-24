@@ -1,5 +1,5 @@
-from Automaton import Automaton
+from AbstractAutomaton import AbstractAutomaton
 
-class FiniteAutomaton(Automaton):
+class FiniteAutomaton(AbstractAutomaton):
     def __init__(self):
         super().__init__()

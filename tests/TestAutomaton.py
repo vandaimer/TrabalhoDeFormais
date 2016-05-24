@@ -1,10 +1,10 @@
 import unittest
-from Automaton import Automaton
+from AbstractAutomaton import AbstractAutomaton
 
 
-class TestAutomaton(unittest.TestCase):
+class TestAbstractAutomaton(unittest.TestCase):
     def setUp(self):
-        self.finite_automaton =  Automaton()
+        self.finite_automaton =  AbstractAutomaton()
 
     def test_define_conjunto_de_estados(self):
         self.assertTrue(self.finite_automaton.set_states({'S','E','T'}))

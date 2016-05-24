@@ -2,7 +2,7 @@ import unittest
 from FiniteAutomaton import FiniteAutomaton
 
 
-class TestAutomaton(unittest.TestCase):
+class TestFiniteAutomaton(unittest.TestCase):
     def setUp(self):
         self.finite_automaton =  FiniteAutomaton()
 

@@ -1,6 +1,6 @@
 
 
-class Automaton:
+class AbstractAutomaton:
     def __init__(self):
         self.states = ()
         self.alphabet = ()
