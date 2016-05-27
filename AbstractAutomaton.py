@@ -26,7 +26,7 @@ class AbstractAutomaton:
         return True
 
     def add_transition(self, stateA, terminal, stateB ):
-        raise NotImplementedError("Test Error PQP")
+        raise NotImplementedError
 
     def get_transitions(self):
         return self.transitions
