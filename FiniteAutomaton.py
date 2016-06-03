@@ -16,3 +16,25 @@ class FiniteAutomaton(AbstractAutomaton):
         self.transitions[stateA][terminal] = stateB
         return True
 
+    def _achievable_states(self, state=None, achievable=None):
+        transitions = None
+
+        if achievable == None:
+            achievable = {}
+
+        if state == None:
+            transitions = self.transitions
+            state = self.initial_state
+        else:
+            transitions = self.transitions[state]
+
+        if len(self.final_states) == 0 or self.initial_state == None:
+            return False
+
+        if len(transitions) > 0:
+            achievable[self.initial_state] = None
+            for terminal, state in self.transitions[self.initial_state].items():
+                if not state in achievable:
+                    self.minimize(state, achievable)
+            return True
+        return False
