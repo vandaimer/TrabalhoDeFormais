@@ -16,6 +16,34 @@ class FiniteAutomaton(AbstractAutomaton):
         self.transitions[stateA][terminal] = stateB
         return True
 
+    def _live_states(self, achievable_states=None, life_states=None, other_states=None):
+        if len(self.transitions) > 0:
+            if len(self.final_states) == 0 or self.initial_state == None:
+                return False
+
+            achievable_states = set(achievable_states)
+            final_states = set(self.final_states)
+
+            if life_states == None:
+                life_states = achievable_states.intersection(final_states)
+
+            if other_states == None:
+                other_states = achievable_states.difference(life_states)
+
+            for state in other_states:
+                list_state_of_life_state = set(self.transitions[state].values())
+                for item in list_state_of_life_state:
+                    if item in life_states:
+                        life_states.add(state)
+                    elif item != state and item in achievable_states:
+                        new_life_states = self._live_states(achievable_states, life_states, (item,) )
+                        life_states.union(new_life_states)
+                        if item in life_states:
+                            life_states.add(state)
+                achievable_states.remove(state)
+            return life_states
+        return False
+
     def _achievable_states(self, state=None, achievable=None):
         transitions = None
 

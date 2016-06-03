@@ -148,3 +148,57 @@ class TestFiniteAutomaton(unittest.TestCase):
         self.finite_automaton.set_final_states(('q0'))
         self.finite_automaton.add_transition('q0','a','q0')
         self.assertTrue(self.finite_automaton._achievable_states())
+
+    def test_est_vivos_retorna_false_se_nao_tem_trasicoes(self):
+        self.assertFalse(self.finite_automaton._live_states())
+
+    def test_est_vivos_retorna_true_se_tem_uma_transicao_ao_menos(self):
+        self.finite_automaton.set_alphabet(('a'))
+        self.finite_automaton.set_states(('q0'))
+        self.finite_automaton.set_initial_state('q0')
+        self.finite_automaton.set_final_states(('q0'))
+        self.finite_automaton.add_transition('q0','a','q0')
+        self.assertTrue(self.finite_automaton._live_states(achievable_states=('q0',)))
+
+    def test_est_vivos_retorna_false_se_tem_transicoes_mas_nao_tem_estados_finais(self):
+        self.finite_automaton.set_alphabet(('a'))
+        self.finite_automaton.set_states(('q0'))
+        self.finite_automaton.set_initial_state('q0')
+        self.finite_automaton.add_transition('q0','a','q0')
+        self.assertFalse(self.finite_automaton._live_states(achievable_states=('q0',)))
+
+    def test_est_vivos_retorna_false_se_tem_transicoes_mas_nao_tem_sem_estado_inicial(self):
+        self.finite_automaton.set_alphabet(('a'))
+        self.finite_automaton.set_states(('q0'))
+        self.finite_automaton.set_final_states(('q0'))
+        self.finite_automaton.add_transition('q0','a','q0')
+        self.assertFalse(self.finite_automaton._live_states(achievable_states=('q0',)))
+
+    def test_est_vivos_returna_um_estado_vivo_corretamente(self):
+        expected = {'q0'}
+        self.finite_automaton.set_alphabet(('a'))
+        self.finite_automaton.set_states(('q0'))
+        self.finite_automaton.set_initial_state('q0')
+        self.finite_automaton.set_final_states(('q0'))
+        self.finite_automaton.add_transition('q0','a','q0')
+        self.assertEqual(self.finite_automaton._live_states(achievable_states=('q0',)), expected)
+
+    def test_est_vivos_returna_dois_estados_vivos_corretament(self):
+        expected = {'q0', 'q1', 'q2'}
+        achievable_states = ('q0','q1','q2','q3')
+
+        self.finite_automaton.set_alphabet(('a','b'))
+        self.finite_automaton.set_states(('q0','q1','q2','q3','q4','q5'))
+        self.finite_automaton.set_initial_state('q0')
+        self.finite_automaton.set_final_states(('q1','q4'))
+
+        self.finite_automaton.add_transition('q0','a','q2')
+        self.finite_automaton.add_transition('q0','b','q3')
+        self.finite_automaton.add_transition('q1','a','q1')
+        self.finite_automaton.add_transition('q1','b','q2')
+        self.finite_automaton.add_transition('q2','a','q1')
+        self.finite_automaton.add_transition('q2','b','q1')
+        self.finite_automaton.add_transition('q3','a','q4')
+        self.finite_automaton.add_transition('q3','b','q3')
+
+        self.assertEqual(self.finite_automaton._live_states(achievable_states=achievable_states), expected)
