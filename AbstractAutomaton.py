@@ -37,6 +37,9 @@ class AbstractAutomaton:
         return True
 
     def set_final_states(self, states):
+        if not isinstance(states, tuple):
+            states = (states,)
+
         for state in states:
             if state not in self.states:
                 return False

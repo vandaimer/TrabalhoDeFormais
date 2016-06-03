@@ -69,6 +69,14 @@ class TestAbstractAutomaton(unittest.TestCase):
         self.finite_automaton.set_states(('S', 'T'))
         self.assertTrue(self.finite_automaton.set_final_states(('S','T')))
 
+    def test_define_apenas_um_estado_final_com_dois_caracteres(self):
+        self.finite_automaton.set_states(('q0'))
+        self.assertTrue(self.finite_automaton.set_final_states(('q0')))
+
+    def test_define_apenas_um_estado_final_com_um_caractere(self):
+        self.finite_automaton.set_states(('S'))
+        self.assertTrue(self.finite_automaton.set_final_states(('S')))
+
     def test_nao_define_estado_final_se_ele_nao_foi_definido_antes(self):
         self.assertFalse(self.finite_automaton.set_final_states(('S','B')))
 
