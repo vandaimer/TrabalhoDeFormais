@@ -141,13 +141,26 @@ class TestFiniteAutomaton(unittest.TestCase):
         self.finite_automaton.add_transition('q0','a','q0')
         self.assertFalse(self.finite_automaton._achievable_states())
 
-    def test_est_alcacaveis_retorna_true_se_tem_uma_transicao_ao_menos(self):
+    def test_est_alcacaveis_retorna_est_alcacaveis_tento_uma_transicao(self):
+        expected = {'q0'}
         self.finite_automaton.set_alphabet(('a'))
         self.finite_automaton.set_states(('q0'))
         self.finite_automaton.set_initial_state('q0')
         self.finite_automaton.set_final_states(('q0'))
         self.finite_automaton.add_transition('q0','a','q0')
-        self.assertTrue(self.finite_automaton._achievable_states())
+        self.assertEqual(self.finite_automaton._achievable_states(), expected)
+
+    def test_est_alcacaveis_retorna_est_alcancaveis_tento_duas_transicao(self):
+        expected = {'q0','q1'}
+        self.finite_automaton.set_alphabet(('a','b'))
+        self.finite_automaton.set_states(('q0','q1'))
+        self.finite_automaton.set_initial_state('q0')
+        self.finite_automaton.set_final_states(('q0'))
+        self.finite_automaton.add_transition('q0','a','q1')
+        self.finite_automaton.add_transition('q0','b','q0')
+        self.finite_automaton.add_transition('q1','a','q1')
+        self.finite_automaton.add_transition('q1','b','q0')
+        self.assertEqual(self.finite_automaton._achievable_states(), expected)
 
     def test_est_vivos_retorna_false_se_nao_tem_trasicoes(self):
         self.assertFalse(self.finite_automaton._live_states())

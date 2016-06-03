@@ -60,9 +60,9 @@ class FiniteAutomaton(AbstractAutomaton):
             return False
 
         if len(transitions) > 0:
-            achievable[self.initial_state] = None
-            for terminal, state in self.transitions[self.initial_state].items():
-                if not state in achievable:
-                    self.minimize(state, achievable)
-            return True
+            achievable[state] = None
+            for terminal, stateB in self.transitions[state].items():
+                if not stateB in achievable:
+                    self._achievable_states(stateB, achievable)
+            return set(achievable)
         return False
