@@ -36,11 +36,11 @@ class FiniteAutomaton(AbstractAutomaton):
                     if item in life_states:
                         life_states.add(state)
                     elif item != state and item in achievable_states:
+                        achievable_states.remove(item)
                         new_life_states = self._live_states(achievable_states, life_states, (item,) )
                         life_states.union(new_life_states)
                         if item in life_states:
                             life_states.add(state)
-                achievable_states.remove(state)
             return life_states
         return False
 
