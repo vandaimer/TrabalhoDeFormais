@@ -17,7 +17,6 @@ class FiniteAutomaton(AbstractAutomaton):
         return True
 
     def minimize(self, live_states=None):
-        num_class = 0
         validation = live_states != None and len(self.final_states) > 0 and len(self.transitions) > 0
         classes = []
         if validation:
@@ -30,25 +29,30 @@ class FiniteAutomaton(AbstractAutomaton):
                 else:
                     class_k_f.add_state(state)
 
-            # classes.append(class_f)
-            classes.append(class_k_f)
+            classes.append(class_f)
+            #classes.append(class_k_f)
 
             for item in classes:
                 states = item.get_states().copy()
                 for state in item.get_states():
+                    print( "state ", state )
                     del states[state]
                     for state_b in states:
                         transitions = self.transitions[state]
                         transitions_b = self.transitions[state_b]
+                        classBuffer = ClassStates()
                         for simbol in self.alphabet:
-                            if item.has_state(transitions[simbol]) != True and item.has_state(transitions_b[simbol]) == True:
-                                newClass = ClassStates()
-                                newClass.add_state(state_b)
-                                classes.append(newClass)
-                # classes.remove(item)
-            x = [y.get_states() for y in classes]
-            print(x)
-            return live_states
+
+                            validation = ( item.has_state(transitions[simbol]) != True and item.has_state(transitions_b[simbol]) == True) or ( item.has_state(transitions[simbol]) == True and item.has_state(transitions_b[simbol]) != True)
+
+                            if validation:
+                                classBuffer.add_state(state_b)
+                                del states[state_b]
+
+                        if len(classBuffer.get_states()) > 0:
+                            classes.append(classBuffer)
+            x = [x.get_states() for x in classes]
+            return x
         return False
 
     def _live_states(self, achievable_states=None, life_states=None, other_states=None):

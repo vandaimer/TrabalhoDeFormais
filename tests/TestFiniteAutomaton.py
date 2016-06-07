@@ -295,6 +295,7 @@ class TestFiniteAutomaton(unittest.TestCase):
 
         self.finite_automaton.add_transition('A', 'a', 'G')
         self.finite_automaton.add_transition('A', 'b', 'B')
+
         self.finite_automaton.add_transition('B', 'a', 'F')
         self.finite_automaton.add_transition('B', 'b', 'E')
         self.finite_automaton.add_transition('C', 'a', 'C')
@@ -305,17 +306,17 @@ class TestFiniteAutomaton(unittest.TestCase):
         self.finite_automaton.add_transition('E', 'b', 'A')
         self.finite_automaton.add_transition('F', 'a', 'B')
         self.finite_automaton.add_transition('F', 'b', 'C')
+
         self.finite_automaton.add_transition('G', 'a', 'G')
         self.finite_automaton.add_transition('G', 'b', 'F')
+
         self.finite_automaton.add_transition('H', 'a', 'H')
         self.finite_automaton.add_transition('H', 'b', 'D')
 
         achievable = self.finite_automaton._achievable_states()
         live_states = self.finite_automaton._live_states(achievable)
 
-
-
-        self.assertEqual(self.finite_automaton.minimize(live_states), live_states)
+        self.assertEqual(self.finite_automaton.minimize(live_states), [{'A':None, 'G':None}])
 
     # def test_minimiza_retorna_classe_correta_se_1_estado_vivo(self):
     #     expected = {'A':1}
