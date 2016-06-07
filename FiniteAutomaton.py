@@ -16,6 +16,41 @@ class FiniteAutomaton(AbstractAutomaton):
         self.transitions[stateA][terminal] = stateB
         return True
 
+    def minimize(self, live_states=None):
+        num_class = 0
+        validation = live_states != None and len(self.final_states) > 0 and len(self.transitions) > 0
+        classes = []
+        if validation:
+            dict_states = {}
+            class_f = ClassStates()
+            class_k_f = ClassStates()
+            for state in live_states:
+                if state in self.final_states:
+                    class_f.add_state(state)
+                else:
+                    class_k_f.add_state(state)
+
+            # classes.append(class_f)
+            classes.append(class_k_f)
+
+            for item in classes:
+                states = item.get_states().copy()
+                for state in item.get_states():
+                    del states[state]
+                    for state_b in states:
+                        transitions = self.transitions[state]
+                        transitions_b = self.transitions[state_b]
+                        for simbol in self.alphabet:
+                            if item.has_state(transitions[simbol]) != True and item.has_state(transitions_b[simbol]) == True:
+                                newClass = ClassStates()
+                                newClass.add_state(state_b)
+                                classes.append(newClass)
+                # classes.remove(item)
+            x = [y.get_states() for y in classes]
+            print(x)
+            return live_states
+        return False
+
     def _live_states(self, achievable_states=None, life_states=None, other_states=None):
         if len(self.transitions) > 0:
             if len(self.final_states) == 0 or self.initial_state == None:
@@ -66,3 +101,19 @@ class FiniteAutomaton(AbstractAutomaton):
                     self._achievable_states(stateB, achievable)
             return set(achievable)
         return False
+
+class ClassStates:
+    def __init__(self):
+        self.states = {}
+
+    def add_state(self, state):
+        self.states[state] = None
+
+    def remove_state(self, state):
+        del self.states[state]
+
+    def get_states(self):
+        return self.states
+
+    def has_state(self, state):
+        return state in self.states
