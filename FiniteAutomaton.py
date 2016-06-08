@@ -19,6 +19,7 @@ class FiniteAutomaton(AbstractAutomaton):
     def minimize(self, live_states=None):
         validation = live_states != None and len(self.final_states) > 0 and len(self.transitions) > 0
         classes = []
+        nClasses = []
         if validation:
             dict_states = {}
             class_f = ClassStates()
@@ -35,26 +36,56 @@ class FiniteAutomaton(AbstractAutomaton):
             for item in classes:
                 states = item.get_states().copy()
                 for state in item.get_states():
-                    print( "state ", state )
-                    del states[state]
-                    for state_b in states:
-                        active = item.get_state(state_b)
-                        if active:
-                            transitions = self.transitions[state]
-                            transitions_b = self.transitions[state_b]
-                            classBuffer = ClassStates()
-                            for simbol in self.alphabet:
+                    nClass = ClassStates()
+                    active = item.get_state(state)
+                    if active:
+                        nClass.add_state(state)
+                        print( "state ", state )
+                        item.inative_state(state)
+                        # del states[state]
+                        classBuffer = ClassStates()
+                        for state_b in states:
+                            active = item.get_state(state_b)
+                            if active:
+                                print("eu sou o segundo state ", state_b)
+                                transitions = self.transitions[state]
+                                transitions_b = self.transitions[state_b]
+                                length_alphabet = len(self.alphabet)
+                                counter = 0
+                                for simbol in self.alphabet:
 
-                                validation = ( item.has_state(transitions[simbol]) != True and item.has_state(transitions_b[simbol]) == True) or ( item.has_state(transitions[simbol]) == True and item.has_state(transitions_b[simbol]) != True)
+                                    counter += 1
+                                    validation = ( item.has_state(transitions[simbol]) != True and item.has_state(transitions_b[simbol]) == True) or ( item.has_state(transitions[simbol]) == True and item.has_state(transitions_b[simbol]) != True)
 
-                                if validation:
-                                    classBuffer.add_state(state_b)
+                                    if not validation:
+                                        if counter == length_alphabet:
+                                            print("XXXT ", state_b)
+                                            nClass.add_state(state_b)
+                                    else:
+                                        print("state ( %s ) e state ( %s ) -- state ( %s ) vai para buffer" % (state, state_b, state_b ) )
+                                        classBuffer.add_state(state_b)
+                                        if counter != length_alphabet:
+                                            break #precisa do break, se não ele itera com o outro simbolo e muda as parada
                                     item.inative_state(state_b)
 
-                            if len(classBuffer.get_states()) > 0:
-                                classes.append(classBuffer)
-            x = [list(x.get_states().keys()) for x in classes]
-            print(x)
+                        if len(classBuffer.get_states()) > 0:
+                            nClasses.append(classBuffer)
+                        nClasses.append(nClass)
+
+                        print("primeiro for state_b acabou")
+                        print("numero de classes %s" % len(nClasses))
+                        # r = []
+                        print(nClasses[0].get_states())
+                        # print(nClasses[1].get_states())
+                        # exit()
+
+            r = {}
+            for x in range(len(nClasses)):
+                states = list(nClasses[x].get_states().keys())
+                r[x] = states
+            # x = [list(x.get_states().keys()) for x in classes]
+            # print(x)
+            print('NOVAS CLASSES aeeeeee ', r)
             return x
         return False
 
@@ -134,6 +165,7 @@ class ClassStates:
     def inative_state(self, state):
         has_state = self.has_state(state)
         if has_state:
+            print("%s inativo" % state)
             self.states[state] = False
             return True
         return False
