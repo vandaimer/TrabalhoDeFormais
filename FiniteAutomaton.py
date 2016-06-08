@@ -29,8 +29,8 @@ class FiniteAutomaton(AbstractAutomaton):
                 else:
                     class_k_f.add_state(state)
 
-            classes.append(class_f)
-            #classes.append(class_k_f)
+            # classes.append(class_f)
+            classes.append(class_k_f)
 
             for item in classes:
                 states = item.get_states().copy()
@@ -38,20 +38,23 @@ class FiniteAutomaton(AbstractAutomaton):
                     print( "state ", state )
                     del states[state]
                     for state_b in states:
-                        transitions = self.transitions[state]
-                        transitions_b = self.transitions[state_b]
-                        classBuffer = ClassStates()
-                        for simbol in self.alphabet:
+                        active = item.get_state(state_b)
+                        if active:
+                            transitions = self.transitions[state]
+                            transitions_b = self.transitions[state_b]
+                            classBuffer = ClassStates()
+                            for simbol in self.alphabet:
 
-                            validation = ( item.has_state(transitions[simbol]) != True and item.has_state(transitions_b[simbol]) == True) or ( item.has_state(transitions[simbol]) == True and item.has_state(transitions_b[simbol]) != True)
+                                validation = ( item.has_state(transitions[simbol]) != True and item.has_state(transitions_b[simbol]) == True) or ( item.has_state(transitions[simbol]) == True and item.has_state(transitions_b[simbol]) != True)
 
-                            if validation:
-                                classBuffer.add_state(state_b)
-                                del states[state_b]
+                                if validation:
+                                    classBuffer.add_state(state_b)
+                                    item.inative_state(state_b)
 
-                        if len(classBuffer.get_states()) > 0:
-                            classes.append(classBuffer)
-            x = [x.get_states() for x in classes]
+                            if len(classBuffer.get_states()) > 0:
+                                classes.append(classBuffer)
+            x = [list(x.get_states().keys()) for x in classes]
+            print(x)
             return x
         return False
 
@@ -111,7 +114,7 @@ class ClassStates:
         self.states = {}
 
     def add_state(self, state):
-        self.states[state] = None
+        self.states[state] = True
 
     def remove_state(self, state):
         del self.states[state]
@@ -121,3 +124,16 @@ class ClassStates:
 
     def has_state(self, state):
         return state in self.states
+
+    def get_state(self, state):
+        has_state = self.has_state(state)
+        if has_state:
+            return self.states[state]
+        return False
+
+    def inative_state(self, state):
+        has_state = self.has_state(state)
+        if has_state:
+            self.states[state] = False
+            return True
+        return False
