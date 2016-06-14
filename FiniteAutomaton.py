@@ -30,7 +30,7 @@ class FiniteAutomaton(AbstractAutomaton):
                 else:
                     class_k_f.add_state(state)
 
-            # classes.append(class_f)
+            classes.append(class_f)
             classes.append(class_k_f)
 
             for item in classes:
@@ -71,22 +71,11 @@ class FiniteAutomaton(AbstractAutomaton):
                         if len(classBuffer.get_states()) > 0:
                             nClasses.append(classBuffer)
                         nClasses.append(nClass)
-
-                        print("primeiro for state_b acabou")
-                        print("numero de classes %s" % len(nClasses))
-                        # r = []
-                        print(nClasses[0].get_states())
-                        # print(nClasses[1].get_states())
-                        # exit()
-
-            r = {}
+            r = []
             for x in range(len(nClasses)):
                 states = list(nClasses[x].get_states().keys())
-                r[x] = states
-            # x = [list(x.get_states().keys()) for x in classes]
-            # print(x)
-            print('NOVAS CLASSES aeeeeee ', r)
-            return x
+                r.append(sorted(states))
+            return sorted(r)
         return False
 
     def _live_states(self, achievable_states=None, life_states=None, other_states=None):

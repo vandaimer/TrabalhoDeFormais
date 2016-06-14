@@ -316,7 +316,7 @@ class TestFiniteAutomaton(unittest.TestCase):
         achievable = self.finite_automaton._achievable_states()
         live_states = self.finite_automaton._live_states(achievable)
 
-        self.assertEqual(self.finite_automaton.minimize(live_states), [{'A':None, 'G':None}])
+        self.assertEqual(self.finite_automaton.minimize(live_states), [['A', 'G'], ['B', 'F'], ['C', 'E']] )
 
     # def test_minimiza_retorna_classe_correta_se_1_estado_vivo(self):
     #     expected = {'A':1}
