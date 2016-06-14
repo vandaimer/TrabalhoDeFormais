@@ -287,7 +287,7 @@ class TestFiniteAutomaton(unittest.TestCase):
         live_states = {'A'}
         self.assertFalse(self.finite_automaton.minimize(live_states))
 
-    def test_minimiza_retorna_live_state(self):
+    def test_minimiza_retorna_classes_para_novo_automato(self):
         self.finite_automaton.set_alphabet(('a','b'))
         self.finite_automaton.set_states(('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'))
         self.finite_automaton.set_initial_state('A')
@@ -316,9 +316,4 @@ class TestFiniteAutomaton(unittest.TestCase):
         achievable = self.finite_automaton._achievable_states()
         live_states = self.finite_automaton._live_states(achievable)
 
-        self.assertEqual(self.finite_automaton.minimize(live_states), [['A', 'G'], ['B', 'F'], ['C', 'E']] )
-
-    # def test_minimiza_retorna_classe_correta_se_1_estado_vivo(self):
-    #     expected = {'A':1}
-    #     live_states = {'A'}
-    #     self.assertEqual(self.finite_automaton.minimize(live_states), expected)
+        self.assertEqual(self.finite_automaton.minimize(live_states), [['A', 'G'], ['B', 'F'], ['C', 'E']])
