@@ -46,15 +46,54 @@ class TestAutomaton(unittest.TestCase):
 
         self.assertEqual(self.automaton.determinizar(), expected)
 
-    def test_retorna_transicoes_deterministicas_submetendo_AFD(self):
-        expected = {'A':{'a':['B']}, 'B':{'a':['B']}, 'C':{'a':['C']}}
+    def test_deterministic_retorna_false_se_nao_tem_alfabeto(self):
+        self.assertFalse(self.automaton.is_deterministic())
 
+    def test_deterministic_retorna_false_se_nao_tem_transicoes(self):
         self.automaton.set_alphabet(("a"))
-        self.automaton.set_states(("A","B","C"))
-        self.automaton.add_transition("A","a","B")
-        self.automaton.add_transition("B","a","B")
-        self.automaton.add_transition("C","a","C")
-        self.automaton.set_initial_state("A")
-        self.automaton.set_final_states(("A"))
+        self.assertFalse(self.automaton.is_deterministic())
 
-        self.assertEqual(self.automaton.determinizar(), expected)
+    def test_deterministic_retorna_false_se_nao_tem_estados_finais(self):
+        self.automaton.set_alphabet("a")
+        self.automaton.set_states("A")
+        self.automaton.add_transition("A","a","A")
+        self.assertFalse(self.automaton.is_deterministic())
+
+    def test_deterministic_retorna_false_se_nao_tem_estado_inicial(self):
+        self.automaton.set_alphabet("a")
+        self.automaton.set_states("A")
+        self.automaton.set_final_states(("A"))
+        self.automaton.add_transition("A","a","A")
+        self.assertFalse(self.automaton.is_deterministic())
+
+    def test_retorna_false_se_AF_eh_nao_deterministico(self):
+        self.automaton.set_alphabet("a")
+        self.automaton.set_states(("A","B"))
+        self.automaton.set_final_states(("A"))
+        self.automaton.set_initial_state("A")
+        self.automaton.add_transition("A","a","A")
+        self.automaton.add_transition("A","a","B")
+
+        self.assertFalse(self.automaton.is_deterministic())
+
+    def test_retorna_true_se_AF_eh_deterministico(self):
+        self.automaton.set_alphabet("a")
+        self.automaton.set_states(("A","B"))
+        self.automaton.set_final_states(("A"))
+        self.automaton.set_initial_state("A")
+        self.automaton.add_transition("A","a","A")
+
+        self.assertTrue(self.automaton.is_deterministic())
+
+    # def test_retorna_transicoes_deterministicas_submetendo_AFD(self):
+    #     expected = {'A':{'a':['B']}, 'B':{'a':['B']}, 'C':{'a':['C']}}
+
+    #     self.automaton.set_alphabet(("a"))
+    #     self.automaton.set_states(("A","B","C"))
+    #     self.automaton.add_transition("A","a","B")
+    #     self.automaton.add_transition("B","a","B")
+    #     self.automaton.add_transition("C","a","C")
+    #     self.automaton.set_initial_state("A")
+    #     self.automaton.set_final_states(("A"))
+
+    #     self.assertEqual(self.automaton.determinizar(), expected)

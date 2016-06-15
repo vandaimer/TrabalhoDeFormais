@@ -33,3 +33,15 @@ class Automaton(AbstractAutomaton):
                 transitions_to_modify[newState] = {}
                 transitions_to_modify[newState][simbol] = sorted(list(list_union_states))
         return transitions_to_modify
+
+    def is_deterministic(self):
+        if len(self.alphabet) == 0: return False
+        if len(self.transitions) == 0: return False
+        if len(self.final_states) == 0: return False
+        if self.initial_state == None: return False
+
+        for transition in self.transitions.values():
+            for simbol in self.alphabet:
+                if len(transition[simbol]) > 1:
+                    return False
+        return True
