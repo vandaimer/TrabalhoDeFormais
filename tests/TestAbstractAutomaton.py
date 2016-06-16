@@ -6,6 +6,28 @@ class TestAbstractAutomaton(unittest.TestCase):
     def setUp(self):
         self.finite_automaton =  AbstractAutomaton()
 
+    def test_adiciona_um_novo_estado(self):
+        self.assertTrue(self.finite_automaton.add_state("A"))
+
+    def test_adiciona_varios_e_depois_um(self):
+        expected = ("q0","q1","q2")
+        self.finite_automaton.set_states(("q0","q1"))
+        self.finite_automaton.add_state("q2")
+
+        self.assertEqual(self.finite_automaton.states, expected)
+
+    def test_se_retorna_o_estado_adicionado(self):
+        expected = ("q0",)
+        self.finite_automaton.add_state("q0")
+
+        self.assertEqual(self.finite_automaton.states, expected)
+
+    def test_adiciona_um_depois_varios(self):
+        expected = ("q0","q1","q2")
+        self.finite_automaton.add_state("q2")
+        self.finite_automaton.set_states(("q0","q1"))
+
+        self.assertEqual(self.finite_automaton.states, expected)
     def test_define_conjunto_de_estados(self):
         self.assertTrue(self.finite_automaton.set_states({'S','E','T'}))
 

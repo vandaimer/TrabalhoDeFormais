@@ -33,7 +33,7 @@ class TestAutomaton(unittest.TestCase):
         self.assertFalse(self.automaton.determinizar())
 
     def test_retorna_transicoes_deterministicas_submetendo_AFND(self):
-        expected = {'A':{'a':['B','C']}, 'BC':{'a':['B','C']}}
+        expected = {'A':{'a':'BC'}, 'BC':{'a':'BC'}}
 
         self.automaton.set_alphabet(("a"))
         self.automaton.set_states(("A","B","C"))
