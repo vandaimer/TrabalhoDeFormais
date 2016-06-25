@@ -24,6 +24,7 @@ class AbstractAutomaton:
         return self.alphabet
 
     def add_state(self, state):
+        if state in self.states: return False
         if len(self.states) > 0:
             states = list(self.states)
             states.append(state)
@@ -53,6 +54,16 @@ class AbstractAutomaton:
     def set_initial_state(self, state):
         if state not in self.states: return False
         self.initial_state = state
+        return True
+
+    def add_final_state(self, state):
+        if state in self.final_states: return False
+        if len(self.final_states) > 0:
+            states = list(self.final_states)
+            states.append(state)
+            self.final_states = tuple(states)
+        else:
+            self.final_states = (state,)
         return True
 
     def set_final_states(self, states):
