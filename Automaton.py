@@ -21,40 +21,30 @@ class Automaton(AbstractAutomaton):
 
         return True
 
-    def determinizar(self):
-        newAutomaton = FiniteAutomaton()
-
+    def determinizar(self, state = None, newAutomaton = None):
         if not self.is_deterministic():
             if len(self.transitions) == 0: return False
-            newAutomaton.set_alphabet(self.alphabet)
-            newAutomaton.add_state(self.initial_state)
+            if state == None:
+                state = self.initial_state
+
+            if newAutomaton == None:
+                newAutomaton = FiniteAutomaton()
+                newAutomaton.set_alphabet(self.alphabet)
+                newAutomaton.add_state(self.initial_state)
+
             for simbol in self.alphabet:
-                dict_union_states = {}
-                if self.transitions[self.initial_state].get(simbol) != None:
-                    for another_state in self.transitions[self.initial_state][simbol]:
-                        for x in self.alphabet:
-                            if dict_union_states.get(x) != None:
-                                if self.transitions.get(another_state) != None:
-                                    if self.transitions[another_state].get(x) != None:
-                                        dict_union_states[x] = dict_union_states[x].union(
-                                            set(self.transitions.get(another_state)[x]))
-                            else:
-                                if self.transitions[another_state].get(x) != None:
-                                    dict_union_states[x] = set(self.transitions.get(another_state)[x])
+                if self.transitions.get(state) != None and self.transitions[state].get(simbol) != None:
+                    new_state = self.transitions[state][simbol]
+                    new_state = ''.join(sorted(new_state))
+                else:
+                    list_of_state = list(state)
+                    union_states = self.union_states(simbol, list_of_state)
+                    new_state = ''.join(sorted(union_states))
 
-                    newState = ''.join(sorted(self.transitions[self.initial_state][simbol]))
-                    newAutomaton.add_state(newState)
-                    newAutomaton.add_transition(self.initial_state, simbol, newState)
-
-                    for index, states in dict_union_states.items():
-                        state = ''.join(sorted(list(states)))
-                        newAutomaton.add_state(state)
-                        newAutomaton.add_transition(newState, index, state)
-
-            for final_state in self.final_states:
-                for state in newAutomaton.states:
-                    if final_state in state:
-                        newAutomaton.add_final_state(state)
+                if not new_state in newAutomaton.states:
+                    newAutomaton.add_state(new_state)
+                    self.determinizar(new_state, newAutomaton)
+                newAutomaton.add_transition(state, simbol, new_state)
             return newAutomaton
 
         for index, transition in self.transitions.items():
@@ -62,6 +52,14 @@ class Automaton(AbstractAutomaton):
                 self.transitions[index][simbol] = ''.join(list_states)
 
         return self
+
+    def union_states(self, simbol, list_states=None):
+        dict_union_states = []
+        for state in list_states:
+            if self.transitions.get(state) != None:
+                if self.transitions[state].get(simbol) != None:
+                    dict_union_states = dict_union_states+self.transitions[state][simbol]
+        return dict_union_states
 
     def is_deterministic(self):
         if len(self.alphabet) == 0: return False
