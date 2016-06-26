@@ -54,11 +54,16 @@ class Automaton(AbstractAutomaton):
                     newAutomaton.add_transition(state, simbol, new_state)
             return newAutomaton
 
+        newAutomaton = FiniteAutomaton()
+        newAutomaton.set_alphabet(self.get_alphabet())
+        newAutomaton.set_states(self.states)
+        newAutomaton.set_initial_state(self.get_initial_state())
+        newAutomaton.set_final_states(self.get_final_states())
         for index, transition in self.transitions.items():
             for simbol,list_states in self.transitions[index].items():
-                self.transitions[index][simbol] = ''.join(list_states)
+                newAutomaton.add_transition(index, simbol,''.join(list_states))
 
-        return self
+        return newAutomaton
 
     def union_states(self, simbol, list_states=None):
         dict_union_states = []
