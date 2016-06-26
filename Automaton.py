@@ -31,6 +31,7 @@ class Automaton(AbstractAutomaton):
                 newAutomaton = FiniteAutomaton()
                 newAutomaton.set_alphabet(self.alphabet)
                 newAutomaton.add_state(self.initial_state)
+                newAutomaton.set_initial_state(self.initial_state)
 
             for simbol in self.alphabet:
                 if self.transitions.get(state) != None and self.transitions[state].get(simbol) != None:
@@ -41,10 +42,16 @@ class Automaton(AbstractAutomaton):
                     union_states = self.union_states(simbol, list_of_state)
                     new_state = ''.join(sorted(union_states))
 
-                if not new_state in newAutomaton.states:
-                    newAutomaton.add_state(new_state)
-                    self.determinizar(new_state, newAutomaton)
-                newAutomaton.add_transition(state, simbol, new_state)
+                if new_state != '':
+                    if not new_state in newAutomaton.states:
+                        newAutomaton.add_state(new_state)
+                        self.determinizar(new_state, newAutomaton)
+
+                    for x in new_state:
+                        if x in self.final_states:
+                            newAutomaton.add_final_state(new_state)
+                            break
+                    newAutomaton.add_transition(state, simbol, new_state)
             return newAutomaton
 
         for index, transition in self.transitions.items():
@@ -58,7 +65,11 @@ class Automaton(AbstractAutomaton):
         for state in list_states:
             if self.transitions.get(state) != None:
                 if self.transitions[state].get(simbol) != None:
-                    dict_union_states = dict_union_states+self.transitions[state][simbol]
+                    lista = []
+                    for x in self.transitions[state][simbol]:
+                        if dict_union_states.count(x) == 0:
+                            lista.append(x)
+                    dict_union_states = dict_union_states+lista
         return dict_union_states
 
     def is_deterministic(self):
