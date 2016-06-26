@@ -349,3 +349,37 @@ class TestFiniteAutomaton(unittest.TestCase):
 
         self.finite_automaton = at.determinizar()
         self.assertEqual(self.finite_automaton._achievable_states(),{"S","A","BF","FS","C","BFS","AC"})
+
+    def test_vivos_nao_deterministico(self):
+        from Automaton import Automaton
+        at = Automaton()
+
+        at.set_alphabet(("a","b","c"))
+        at.set_states(("S","A","B","C","F"))
+        a = at.set_initial_state("S")
+        at.set_final_states(("S","F"))
+
+        at.add_transition("S","a","A")
+        at.add_transition("S","b","B")
+        at.add_transition("S","b","F")
+        at.add_transition("S","c","S")
+        at.add_transition("S","c","F")
+
+        at.add_transition("A","a","S")
+        at.add_transition("A","a","F")
+        at.add_transition("A","b","C")
+        at.add_transition("A","c","A")
+
+        at.add_transition("B","a","A")
+        at.add_transition("B","c","S")
+        at.add_transition("B","c","B")
+        at.add_transition("B","c","F")
+
+        at.add_transition("C","a","S")
+        at.add_transition("C","a","F")
+        at.add_transition("C","c","A")
+        at.add_transition("C","c","C")
+
+        self.finite_automaton = at.determinizar()
+        alcancaveis = self.finite_automaton._achievable_states()
+        self.assertEqual(self.finite_automaton._live_states(alcancaveis),{"S","A","BF","FS","C","BFS","AC"})
