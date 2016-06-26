@@ -160,6 +160,7 @@ class TestAutomaton(unittest.TestCase):
 
         self.automaton2.set_alphabet(("a", "b", "c"))
         self.automaton2.set_states(("A", "B", "C"))
+        self.automaton2.add_transition("A", "a", "A")
         self.automaton2.add_transition("A", "a", "B")
         self.automaton2.add_transition("B", "b", "C")
         self.automaton2.add_transition("C", "c", "C")

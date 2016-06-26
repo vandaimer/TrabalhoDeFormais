@@ -30,22 +30,26 @@ class Automaton(AbstractAutomaton):
             newAutomaton.add_state(self.initial_state)
             for simbol in self.alphabet:
                 dict_union_states = {}
-                for another_state in self.transitions[self.initial_state][simbol]:
-                    for x in self.alphabet:
-                        if dict_union_states.get(x) != None:
-                            if self.transitions.get(another_state) != None:
-                                dict_union_states[x] = dict_union_states[x].union(set(self.transitions.get(another_state)[x]))
-                        else:
-                            dict_union_states[x] = set(self.transitions.get(another_state)[x])
+                if self.transitions[self.initial_state].get(simbol) != None:
+                    for another_state in self.transitions[self.initial_state][simbol]:
+                        for x in self.alphabet:
+                            if dict_union_states.get(x) != None:
+                                if self.transitions.get(another_state) != None:
+                                    if self.transitions[another_state].get(x) != None:
+                                        dict_union_states[x] = dict_union_states[x].union(
+                                            set(self.transitions.get(another_state)[x]))
+                            else:
+                                if self.transitions[another_state].get(x) != None:
+                                    dict_union_states[x] = set(self.transitions.get(another_state)[x])
 
-                newState = ''.join(sorted(self.transitions[self.initial_state][simbol]))
-                newAutomaton.add_state(newState)
-                newAutomaton.add_transition(self.initial_state, simbol, newState)
+                    newState = ''.join(sorted(self.transitions[self.initial_state][simbol]))
+                    newAutomaton.add_state(newState)
+                    newAutomaton.add_transition(self.initial_state, simbol, newState)
 
-                for index, states in dict_union_states.items():
-                    state = ''.join(sorted(list(states)))
-                    newAutomaton.add_state(state)
-                    newAutomaton.add_transition(newState, index, state)
+                    for index, states in dict_union_states.items():
+                        state = ''.join(sorted(list(states)))
+                        newAutomaton.add_state(state)
+                        newAutomaton.add_transition(newState, index, state)
 
             for final_state in self.final_states:
                 for state in newAutomaton.states:
@@ -67,8 +71,9 @@ class Automaton(AbstractAutomaton):
 
         for transition in self.transitions.values():
             for simbol in self.alphabet:
-                if len(transition[simbol]) > 1:
-                    return False
+                if transition.get(simbol) != None:
+                    if len(transition[simbol]) > 1:
+                        return False
         return True
 
     def completion(self):
@@ -81,8 +86,8 @@ class Automaton(AbstractAutomaton):
 
     def complement(self):
         copia = copy.deepcopy(self)
-        # if not copia.is_deterministic():
-          # copia.determinizar()
+        if not copia.is_deterministic():
+          copia.determinizar()
         copia.completion()
 
         non_final = list()
