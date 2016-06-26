@@ -20,6 +20,14 @@ class AbstractAutomaton:
         self.alphabet = alphabet
         return True
 
+    def completion(self):
+        self.add_state("Z")
+        for state in self.states:
+            for terminal in self.alphabet:
+                if terminal not in self.transitions[state]:
+                    self.add_transition(state, terminal, ''.join("Z"))
+        return True
+
     def get_alphabet(self):
         return self.alphabet
 

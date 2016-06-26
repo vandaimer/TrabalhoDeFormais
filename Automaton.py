@@ -90,14 +90,6 @@ class Automaton(AbstractAutomaton):
                         return False
         return True
 
-    def completion(self):
-        self.add_state("Z")
-        for state in self.states:
-            for terminal in self.alphabet:
-                if terminal not in self.transitions[state]:
-                    self.add_transition(state, terminal, ''.join("Z"))
-        return True
-
     def complement(self):
         copia = copy.deepcopy(self)
         if not copia.is_deterministic():
