@@ -18,6 +18,16 @@ class AbstractAutomaton:
     def get_alphabet(self):
         return self.alphabet
 
+    def add_state(self, state):
+        if len(self.states) > 0:
+            states = list(self.states)
+            states.append(state)
+            self.states = tuple(states)
+            self.transitions[state] = {}
+        else:
+            self.states = (state,)
+        return True
+
     def set_states(self, states):
         if not isinstance(states, tuple):
             self.states = (states,)

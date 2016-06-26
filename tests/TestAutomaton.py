@@ -5,6 +5,7 @@ from Automaton import Automaton
 class TestAutomaton(unittest.TestCase):
     def setUp(self):
         self.automaton =  Automaton()
+        self.automaton2 = Automaton()
 
     def test_retorna_false_se_nao_definir_os_estados(self):
         self.automaton.set_alphabet(("a"))
@@ -97,3 +98,62 @@ class TestAutomaton(unittest.TestCase):
         self.automaton.set_final_states(("A"))
 
         self.assertEqual(self.automaton.determinizar(), expected)
+
+    def test_completion(self):
+        self.automaton.set_alphabet(("a", "b"))
+        self.automaton.set_states(("A", "B", "C"))
+        self.automaton.add_transition("A", "a", "B")
+        self.automaton.add_transition("B", "b", "B")
+        self.automaton.add_transition("C", "a", "C")
+        self.automaton.set_initial_state("A")
+        self.automaton.set_final_states(("C"))
+        self.assertTrue(self.automaton.completion())
+
+    def test_complement(self):
+        self.automaton.set_alphabet(("a", "b"))
+        self.automaton.set_states(("A", "B", "C"))
+        self.automaton.add_transition("A", "a", "B")
+        self.automaton.add_transition("B", "b", "C")
+        self.automaton.add_transition("C", "a", "C")
+        self.automaton.set_initial_state("A")
+        self.automaton.set_final_states(("C"))
+        # self.assertTrue(self.automaton.complement())
+
+    def test_union(self):
+        self.automaton.set_alphabet(("a", "b"))
+        self.automaton.set_states(("A", "B", "C"))
+        self.automaton.add_transition("A", "a", "B")
+        self.automaton.add_transition("B", "b", "C")
+        self.automaton.add_transition("C", "a", "C")
+        self.automaton.set_initial_state("A")
+        self.automaton.set_final_states(("C"))
+
+        self.automaton2.set_alphabet(("a", "b"))
+        self.automaton2.set_states(("A", "B", "C"))
+        self.automaton2.add_transition("A", "a", "B")
+        self.automaton2.add_transition("B", "b", "C")
+        self.automaton2.add_transition("C", "a", "C")
+        self.automaton2.set_initial_state("A")
+        self.automaton2.set_final_states(("C"))
+
+        # self.assertTrue(self.automaton.union(self.automaton2))
+
+    def test_intersection(self):
+        self.automaton.set_alphabet(("a", "b"))
+        self.automaton.set_states(("A", "B", "C"))
+        self.automaton.add_transition("A", "a", "B")
+        self.automaton.add_transition("B", "b", "C")
+        self.automaton.add_transition("C", "a", "C")
+        self.automaton.set_initial_state("A")
+        self.automaton.set_final_states(("C"))
+
+        self.automaton2.set_alphabet(("a", "b", "c"))
+        self.automaton2.set_states(("A", "B", "C"))
+        self.automaton2.add_transition("A", "a", "B")
+        self.automaton2.add_transition("B", "b", "C")
+        self.automaton2.add_transition("C", "c", "C")
+        self.automaton2.set_initial_state("A")
+        self.automaton2.set_final_states(("C"))
+
+        self.assertTrue(self.automaton.intersection(self.automaton2))
+
