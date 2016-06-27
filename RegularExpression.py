@@ -5,7 +5,7 @@ import string
 class RegularExpression:
     def __init__(self):
         self.alphabet = ()
-        self.expression = ()
+        self.expression = ""
         self.allowedSymbols = list(string.ascii_lowercase + string.digits + '&')  # Sao permitidas letras minusculas, digitos e '&'
         self.operators = ['*', '+', '?', '|', '.', '(', ')']  # Operadores validos
 
@@ -26,9 +26,9 @@ class RegularExpression:
             return False
 
     def save_expression(self, filename):
-        pickle.dump(self.expression, open(filename, 'wb'))
+        if filename != '':
+            pickle.dump(self.expression, open(filename, 'wb'))
 
     def load_expression(self, filename):
-        self.set_expression(pickle.load(open(filename, 'rb')))
-
-
+        if filename != '':
+            self.set_expression(pickle.load(open(filename, 'rb')))
